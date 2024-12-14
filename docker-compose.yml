@@ -5,9 +5,16 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: Ardahan91185.
       POSTGRES_DB: enigmadb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - default
+
   web:
-    build:
-      context: .
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
     ports:
       - "8000:8000"
     volumes:
@@ -15,16 +22,15 @@ services:
     environment:
       - DEBUG=True
       - DATABASE_URL=postgres://postgres:Ardahan91185.@db:5432/enigmadb
-    
     depends_on:
       - db
-    
+    networks:
+      - default
     
   nginx:
     image: nginx:alpine
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf # Nginx konfigürasyon dosyası
-      
     ports:
       - "80:80"
     depends_on:
@@ -32,3 +38,6 @@ services:
     restart: always
     networks:
       - default
+
+volumes:
+  postgres_data:

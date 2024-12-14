@@ -1,15 +1,25 @@
-# Temel Python imajını kullan
-FROM python:3.10-slim
+# Base image olarak resmi Python 3.11 imajını kullanıyoruz
+FROM python:3.11-slim-buster
 
-# Çalışma dizinini oluştur ve ayarla
+# GDAL bağımlılıklarını yükle
+
+
+
+
+# Çalışma dizini oluşturma
 WORKDIR /app
 
-# Bağımlılık dosyalarını ekle ve yükle
-COPY requirements.txt .
+# Gereksinimlerin kopyalanması ve kurulumu
+COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Proje dosyalarını kopyala
-COPY . .
+# Proje dosyalarının kopyalanması
+COPY . /app/
 
-# Django sunucusunu başlat
+
+
+# Gerekli ortam değişkenlerinin ayarlanması
+ENV PYTHONUNBUFFERED 1
+
+# Uygulamanın çalıştırılması
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

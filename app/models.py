@@ -2,7 +2,8 @@ from django.db import models
 import uuid
 # Create your models here.
 class UserKey(models.Model):
-    key = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    key = models.UUIDField( default=uuid.uuid4, editable=False)
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
     oem_1 = models.CharField(max_length=255)
     oem_2 = models.CharField(max_length=255)
